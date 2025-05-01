@@ -40,7 +40,9 @@ app.use(express.json());
 app.use(cors());
 
 // REST API Routesnpm start
-
+app.get('/', (req, res) => {
+    res.send('<h2>Status: Healthy</h2>');
+  });
 app.use("/api", orderRoutes);
 
 // GraphQL API
