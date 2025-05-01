@@ -11,7 +11,7 @@ const options = {
         },
         servers: [
             {
-                url: "http://localhost:5000/api",
+                url: "https://ecommerce-api-s8u7.onrender.com/api",
             },
         ],
     },
