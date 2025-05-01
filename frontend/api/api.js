@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Local backend API
-const API_BASE = 'http://localhost:5000';
+// Dynamic backend API base URL from environment variable
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // FakeStore API
 const FAKE_STORE_API = 'https://fakestoreapi.com';
@@ -15,24 +15,23 @@ export const api = {
   updateOrder: (id, data) => axios.put(`${API_BASE}/api/orders/${id}`, data),
   deleteOrder: (id) => axios.delete(`${API_BASE}/api/orders/${id}`),
   getTracking: (id) => axios.get(`${API_BASE}/api/orders/${id}/tracking`),
-  
+
   // Customers
   getCustomerOrders: (id) => axios.get(`${API_BASE}/api/customers/${id}/orders`),
   getRecommendations: (id) => axios.get(`${API_BASE}/api/customers/${id}/recommendations`),
 
   // ===== E-COMMERCE PRODUCTS =====
-  // Electronics only endpoints
   getElectronics: () => axios.get(`${FAKE_STORE_API}/products/category/electronics`),
   getProduct: (id) => axios.get(`${FAKE_STORE_API}/products/${id}`),
-  
-  // Full products endpoints (commented out but available if needed)
+  // Optional endpoints:
   // getProducts: () => axios.get(`${FAKE_STORE_API}/products`),
   // getCategories: () => axios.get(`${FAKE_STORE_API}/products/categories`),
   // getCategoryProducts: (category) => axios.get(`${FAKE_STORE_API}/products/category/${category}`)
 };
 
-// Axios instance with default settings
+// Optional: Axios instance with default settings (not used above)
 const apiInstance = axios.create({
+  baseURL: API_BASE,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json'
