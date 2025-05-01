@@ -3,6 +3,60 @@ const router = express.Router();
 const { getShippingStatus } = require("../services/shippingService");
 const { getRecommendations } = require("../services/recommendationService");
 const pool = require('../db');  // Import MySQL connection
+const axios = require('axios');
+
+
+// FakeStore API base URL
+const FAKE_STORE_API = 'https://fakestoreapi.com';
+
+/**
+ * @swagger
+ * /orders/recent:
+ *   get:
+ *     summary: Get recent orders
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: List of recent orders
+ */
+router.get('/orders/recent', async (req, res) => {
+    try {
+        const [orders] = await pool.query('SELECT * FROM orders ORDER BY created_at DESC');
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
+
+/**
+ * @swagger
+ * /orders/summary:
+ *   get:
+ *     summary: Get order summary statistics
+ *     tags: [Orders]
+ *     responses:
+ *       200:
+ *         description: Order summary statistics
+ */
+router.get('/orders/summary', async (req, res) => {
+    try {
+        const [[{totalOrders}]] = await pool.query('SELECT COUNT(*) as totalOrders FROM orders');
+        const [[{avgOrderValue}]] = await pool.query('SELECT AVG(total_price) as avgOrderValue FROM orders');
+        const [[{ordersThisMonth}]] = await pool.query(`
+            SELECT COUNT(*) as ordersThisMonth 
+            FROM orders 
+            WHERE created_at >= DATE_SUB(NOW(), INTERVAL 1 MONTH)
+        `);
+        
+        res.json({
+            totalOrders,
+            avgOrderValue: parseFloat(avgOrderValue),
+            ordersThisMonth
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+});
 
 /**
  * @swagger
@@ -244,6 +298,65 @@ router.get('/customers/:customerId/recommendations', async (req, res) => {
     } catch (error) {
         console.error("Error fetching recommendations:", error);
         res.status(500).json({ message: 'Failed to fetch recommendations' });
+    }
+});
+
+
+
+/**
+ * @swagger
+ * /products/electronics:
+ *   get:
+ *     summary: Get all electronics products from FakeStore API
+ *     tags: [Products]
+ *     responses:
+ *       200:
+ *         description: List of electronics products
+ *       500:
+ *         description: Failed to fetch electronics products
+ */
+router.get('/products/electronics', async (req, res) => {
+    try {
+        const response = await axios.get(`${FAKE_STORE_API}/products/category/electronics`);
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error fetching electronics:", error);
+        res.status(500).json({ message: 'Failed to fetch electronics products' });
+    }
+});
+
+/**
+ * @swagger
+ * /products/{productId}:
+ *   get:
+ *     summary: Get a specific product from FakeStore API
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: productId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the product
+ *     responses:
+ *       200:
+ *         description: Product details
+ *       404:
+ *         description: Product not found
+ *       500:
+ *         description: Failed to fetch product
+ */
+router.get('/products/:productId', async (req, res) => {
+    try {
+        const response = await axios.get(`${FAKE_STORE_API}/products/${req.params.productId}`);
+        res.json(response.data);
+    } catch (error) {
+        console.error("Error fetching product:", error);
+        if (error.response && error.response.status === 404) {
+            res.status(404).json({ message: 'Product not found' });
+        } else {
+            res.status(500).json({ message: 'Failed to fetch product' });
+        }
     }
 });
 
