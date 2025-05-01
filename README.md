@@ -4,10 +4,10 @@ This project is a **backend API** for an e-commerce platform.
 It provides functionalities for managing **Orders, Customers, Products, Shipping Details, and Recommendations**.  
 The API supports **both REST and GraphQL**, allowing efficient data retrieval and CRUD operations.  
 
-🚀 **Live API URL:**  
-👉 **GraphQL Playground:**   
-👉 **REST API Base URL:** 
-👉 **Swagger Docs:** 
+🚀 **Live API URL: [https://ecommerce-api-frontend.onrender.com/](https://ecommerce-api-frontend.onrender.com)**  
+👉 **GraphQL Playground: [https://ecommerce-api-s8u7.onrender.com/graphql](https://ecommerce-api-s8u7.onrender.com/graphql/)**   
+👉 **REST API Base URL: [https://ecommerce-api-s8u7.onrender.com/](https://ecommerce-api-s8u7.onrender.com/)**  
+👉 **Swagger Docs: [https://ecommerce-api-s8u7.onrender.com/api-docs/](https://ecommerce-api-s8u7.onrender.com/api-docs/)** 
 
 ---
 
@@ -18,7 +18,6 @@ The API supports **both REST and GraphQL**, allowing efficient data retrieval an
 - [⚡ Phase 3: GraphQL API Implementation](#-phase-3-graphql-api-implementation)
 - [📦 Installation & Setup](#-installation--setup)
 - [📂 API Documentation](#-api-documentation)
-- [📌 Example Queries & Mutations](#-example-queries--mutations)
 - [🚀 Deployment (Render)](#-deployment-render)
 ---
 
@@ -62,7 +61,7 @@ In **Phase 2**, two external APIs were created:
 - Simulated as a **mock API** (to mimic a real-world shipping service).  
 
 📌 **Example Response from Shipping API**:
-
+```
 {
     "id": 1,
     "order_id": 1,
@@ -70,13 +69,13 @@ In **Phase 2**, two external APIs were created:
     "carrier": "FedEx",
     "tracking_number": "FX783901245637"
 }
-
+```
 
 2️⃣ **Recommendation Service API**  
 - Returns **product recommendations** for a customer based on past purchases.  
 
 📌 **Example Response from Recommendation API**:
-
+```json
 [
     {
         "productId": 1,
@@ -94,7 +93,7 @@ In **Phase 2**, two external APIs were created:
         "price": "599.99"
     }
 ]
-
+```
 ---
 
 ## ⚡ **Phase 3: GraphQL API Implementation**
@@ -113,8 +112,9 @@ This phase replaced **REST endpoints** with **GraphQL Queries & Mutations** to a
 - **Order Filtering**
 - **CRUD Operations (Create, Update, Delete Orders)**
 
-📌 **Example GraphQL Query (Get Orders by Customer)**
-
+📌 **Example GraphQL Query**  
+(Get Orders by Customer)
+```
 query {
   getOrdersByCustomer(customer_id: 1) {
     id
@@ -127,9 +127,9 @@ query {
     }
   }
 }
-
+```
 📌 **Example GraphQL Mutation (Create an Order)**
-
+```
 mutation {
   createOrder(customer_id: 2, product_id: 3, quantity: 1, total_price: 100.0) {
     id
@@ -138,7 +138,7 @@ mutation {
     total_price
   }
 }
-
+```
 
 ✅ **GraphQL performed better** in cases where multiple relationships were involved (e.g., fetching orders with shipping details).
 
@@ -146,7 +146,7 @@ mutation {
 ## 📦 **Installation & Setup**
 ### 1️⃣ **Clone the Repository**
 
-git clone https://github.com/your-repo/ecommerce-api.git
+git clone [https://github.com/gpoojithanjali/ecommerce-api.git](https://github.com/gpoojithanjali/ecommerce-api.git)
 cd ecommerce-api
 
 
@@ -157,27 +157,27 @@ npm install
 
 ### 3️⃣ **Configure Environment Variables**
 Create a `.env` file and add:
-
+```
 DB_HOST= [your_db_host]
 DB_USER= [your_db_user]
 DB_PASS= [your_db_password]
 DB_NAME= [your_db_name]
 PORT= [your_port_no.]
-
+```
 
 ### 4️⃣ **Run the Server Locally**
-
+```
 npm start
-
+```
 The API will be available at `http://localhost:5000/graphql`.
 
 
 ## 📂 **API Documentation**
 ### ✅ **Swagger for REST API**
-- Open [`https://your-app.onrender.com/api-docs`](https://your-app.onrender.com/api-docs) in a browser.
+- Open [https://ecommerce-api-s8u7.onrender.com/api-docs/](https://ecommerce-api-s8u7.onrender.com/api-docs/) in a browser.
 
 ### ✅ **GraphQL Playground**
-- Open [`https://your-app.onrender.com/graphql`](https://your-app.onrender.com/graphql) to test GraphQL queries.
+- Open [https://ecommerce-api-s8u7.onrender.com/graphql/](https://ecommerce-api-s8u7.onrender.com/graphpl/) to test GraphQL queries.
 
 ---
 
@@ -189,13 +189,13 @@ This API is **deployed on Render** with automatic updates from GitHub.
 2. Create a new **Web Service**.
 3. Connect your **GitHub repository**.
 4. Set **Environment Variables**:
-  
+  ```
    DB_HOST=your_db_host
    DB_USER=your_db_user
    DB_PASS=your_db_password
    DB_NAME=your_db_name
-  
+  ```
 5. Click **Deploy** and wait for Render to build and deploy.
 
-✅ **Once deployed, the API will be accessible at:**
-- [`https://your-app.onrender.com`](https://your-app.onrender.com)
+✅ **Once deployed, the Website will be accessible at:**
+- [https://ecommerce-api-frontend.onrender.com/](https://ecommerce-api-frontend.onrender.com/)
